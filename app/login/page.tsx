@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -75,6 +76,13 @@ export default function LoginPage() {
             <p className="text-sm text-red-600">{errorMessage}</p>
           )}
         </form>
+
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Have an invite code?{" "}
+          <Link href="/signup" className="text-gray-900 underline">
+            Create an account
+          </Link>
+        </p>
       </div>
     </div>
   );
