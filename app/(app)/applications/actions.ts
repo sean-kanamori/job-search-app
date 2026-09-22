@@ -321,6 +321,64 @@ export async function deleteFollowup(
   redirect(`/applications/${applicationId}/activity`);
 }
 
+export async function createContact(applicationId: string, formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const name = ((formData.get("name") as string) ?? "").trim();
+  const role = ((formData.get("role") as string) ?? "").trim() || null;
+  const email = ((formData.get("email") as string) ?? "").trim() || null;
+  const phone = ((formData.get("phone") as string) ?? "").trim() || null;
+  const linkedin_url =
+    ((formData.get("linkedin_url") as string) ?? "").trim() || null;
+  const notes = ((formData.get("notes") as string) ?? "").trim() || null;
+
+  if (!name) throw new Error("Name is required.");
+
+  const { error } = await supabase.from("contacts").insert({
+    user_id: user.id,
+    application_id: applicationId,
+    name,
+    role,
+    email,
+    phone,
+    linkedin_url,
+    notes,
+  });
+  if (error) throw new Error(error.message);
+
+  await logEvent(
+    supabase,
+    user.id,
+    applicationId,
+    "contact_added",
+    `Added contact: ${name}${role ? ` (${role})` : ""}.`
+  );
+
+  revalidatePath(`/applications/${applicationId}/activity`);
+  redirect(`/applications/${applicationId}/activity`);
+}
+
+export async function deleteContact(contactId: string, applicationId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { error } = await supabase
+    .from("contacts")
+    .delete()
+    .eq("id", contactId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/applications/${applicationId}/activity`);
+  redirect(`/applications/${applicationId}/activity`);
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

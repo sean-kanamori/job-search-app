@@ -50,6 +50,19 @@ export type ResumeTemplate = {
   updated_at: string;
 };
 
+export type Contact = {
+  id: string;
+  user_id: string;
+  application_id: string;
+  name: string;
+  role: string | null;
+  email: string | null;
+  phone: string | null;
+  linkedin_url: string | null;
+  notes: string | null;
+  created_at: string;
+};
+
 export type ApplicationEvent = {
   id: string;
   user_id: string;
