@@ -200,11 +200,16 @@ export default async function ActivityPage({
             <span className="mb-1 block text-xs font-medium text-gray-700">
               Role
             </span>
-            <input
+            <select
               name="role"
-              placeholder="Recruiter, Hiring Manager…"
+              defaultValue="Recruiter"
               className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
+            >
+              <option value="Recruiter">Recruiter</option>
+              <option value="Hiring Manager">Hiring Manager</option>
+              <option value="Interviewer">Interviewer</option>
+              <option value="Other">Other</option>
+            </select>
           </label>
           <label className="block">
             <span className="mb-1 block text-xs font-medium text-gray-700">

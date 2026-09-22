@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { StatusBadge } from "@/components/status-badge";
-import type { Application } from "@/lib/types";
+import { ReminderBadge } from "@/components/reminder-badge";
+import { ApplicationsFilterBar } from "@/components/applications-filter-bar";
+import type { Application, ApplicationStatus } from "@/lib/types";
 
 function formatSalary(min: number | null, max: number | null) {
   if (!min && !max) return "—";
@@ -10,12 +12,54 @@ function formatSalary(min: number | null, max: number | null) {
   return fmt(min ?? max ?? 0);
 }
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string; q?: string; reminder?: string }>;
+}) {
+  const { status, q, reminder } = await searchParams;
   const supabase = await createClient();
-  const { data: applications, error } = await supabase
-    .from("applications")
-    .select("*")
-    .order("created_at", { ascending: false });
+
+  const [{ data: applicationsData, error }, { data: followupsData }] =
+    await Promise.all([
+      supabase
+        .from("applications")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabase.from("followups").select("application_id, due_date").eq("done", false),
+    ]);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const overdueAppIds = new Set<string>();
+  const pendingAppIds = new Set<string>();
+  for (const f of followupsData ?? []) {
+    pendingAppIds.add(f.application_id);
+    if (f.due_date < today) overdueAppIds.add(f.application_id);
+  }
+
+  const selectedStatuses = (status ?? "")
+    .split(",")
+    .filter(Boolean) as ApplicationStatus[];
+  const searchQuery = (q ?? "").trim().toLowerCase();
+  const reminderOnly = reminder === "1";
+
+  const applications = ((applicationsData ?? []) as Application[]).filter(
+    (app) => {
+      if (
+        selectedStatuses.length > 0 &&
+        !selectedStatuses.includes(app.status)
+      ) {
+        return false;
+      }
+      if (searchQuery && !app.company.toLowerCase().includes(searchQuery)) {
+        return false;
+      }
+      if (reminderOnly && !pendingAppIds.has(app.id)) {
+        return false;
+      }
+      return true;
+    }
+  );
 
   return (
     <div>
@@ -29,15 +73,19 @@ export default async function Home() {
         </Link>
       </div>
 
+      <ApplicationsFilterBar />
+
       {error && (
         <p className="mb-4 text-sm text-red-600">
           Couldn&apos;t load applications: {error.message}
         </p>
       )}
 
-      {!applications || applications.length === 0 ? (
+      {applications.length === 0 ? (
         <p className="text-sm text-gray-500">
-          No applications yet. Add your first one to get started.
+          {applicationsData && applicationsData.length > 0
+            ? "No applications match these filters."
+            : "No applications yet. Add your first one to get started."}
         </p>
       ) : (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -59,10 +107,13 @@ export default async function Home() {
                 <th className="px-4 py-2 text-left font-medium text-gray-500">
                   Applied
                 </th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                  Reminder
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {(applications as Application[]).map((app) => (
+              {applications.map((app) => (
                 <tr key={app.id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">
                     <Link
@@ -81,6 +132,11 @@ export default async function Home() {
                   </td>
                   <td className="px-4 py-2 text-gray-700">
                     {app.applied_date ?? "—"}
+                  </td>
+                  <td className="px-4 py-2">
+                    {pendingAppIds.has(app.id) && (
+                      <ReminderBadge overdue={overdueAppIds.has(app.id)} />
+                    )}
                   </td>
                 </tr>
               ))}
