@@ -38,6 +38,18 @@ export type Followup = {
   created_at: string;
 };
 
+export type ResumeTemplate = {
+  id: string;
+  user_id: string;
+  name: string;
+  content: string;
+  original_file_path: string | null;
+  original_file_name: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ApplicationEvent = {
   id: string;
   user_id: string;
