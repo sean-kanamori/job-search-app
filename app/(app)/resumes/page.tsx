@@ -14,12 +14,12 @@ export default async function ResumesPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-stone-900">
           Resume templates
         </h1>
         <Link
           href="/resumes/new"
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+          className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700"
         >
           + Upload resume
         </Link>
@@ -32,7 +32,7 @@ export default async function ResumesPage() {
       )}
 
       {templates.length === 0 ? (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-stone-500">
           No resumes yet. Upload a PDF or DOCX to get started.
         </p>
       ) : (
@@ -40,14 +40,14 @@ export default async function ResumesPage() {
           {templates.map((t) => (
             <li
               key={t.id}
-              className="rounded-lg border border-gray-200 bg-white p-4 hover:bg-gray-50"
+              className="rounded-xl border border-stone-200 bg-white p-4 hover:bg-stone-50"
             >
               <Link href={`/resumes/${t.id}`} className="block">
-                <div className="font-medium text-gray-900">{t.name}</div>
-                <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                <div className="font-medium text-stone-900">{t.name}</div>
+                <p className="mt-1 line-clamp-2 text-sm text-stone-500">
                   {t.content || "No extracted text yet."}
                 </p>
-                <div className="mt-2 text-xs text-gray-400">
+                <div className="mt-2 text-xs text-stone-400">
                   Updated {new Date(t.updated_at).toLocaleDateString()}
                 </div>
               </Link>

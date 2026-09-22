@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { Logo } from "@/components/logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -32,16 +33,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-xl font-semibold text-gray-900">
-          Job Search
-        </h1>
-        <p className="mb-6 text-sm text-gray-500">Sign in to continue.</p>
+    <div className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
+      <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
+        <div className="mb-1 flex items-center gap-2">
+          <Logo />
+          <h1 className="text-xl font-semibold text-stone-900">Milo</h1>
+        </div>
+        <p className="mb-6 text-sm text-stone-500">
+          Good to see you again — let&apos;s pick up where you left off.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-gray-700">
+            <span className="mb-1 block text-sm font-medium text-stone-700">
               Email
             </span>
             <input
@@ -50,11 +54,11 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-gray-700">
+            <span className="mb-1 block text-sm font-medium text-stone-700">
               Password
             </span>
             <input
@@ -62,13 +66,13 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
             />
           </label>
           <button
             type="submit"
             disabled={status === "sending"}
-            className="w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            className="w-full rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 disabled:opacity-50"
           >
             {status === "sending" ? "Signing in…" : "Sign in"}
           </button>
@@ -77,9 +81,9 @@ export default function LoginPage() {
           )}
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-500">
+        <p className="mt-4 text-center text-sm text-stone-500">
           Have an invite code?{" "}
-          <Link href="/signup" className="text-gray-900 underline">
+          <Link href="/signup" className="text-stone-900 underline">
             Create an account
           </Link>
         </p>

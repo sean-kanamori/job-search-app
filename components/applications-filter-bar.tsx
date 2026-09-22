@@ -60,21 +60,21 @@ export function ApplicationsFilterBar() {
     selectedStatuses.length > 0 || reminderOnly || query.length > 0;
 
   return (
-    <div className="mb-4 space-y-3 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="mb-4 space-y-3 rounded-xl border border-stone-200 bg-white p-4">
       <div className="flex flex-wrap items-center gap-3">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by company…"
-          className="w-full max-w-xs rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
+          className="w-full max-w-xs rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
         />
-        <label className="flex items-center gap-2 text-sm text-gray-700">
+        <label className="flex items-center gap-2 text-sm text-stone-700">
           <input
             type="checkbox"
             checked={reminderOnly}
             onChange={toggleReminderOnly}
-            className="rounded border-gray-300"
+            className="rounded border-stone-300"
           />
           Pending reminder only
         </label>
@@ -85,7 +85,7 @@ export function ApplicationsFilterBar() {
               setQuery("");
               router.replace(pathname);
             }}
-            className="text-sm text-gray-500 hover:underline"
+            className="text-sm text-stone-500 hover:underline"
           >
             Clear filters
           </button>
@@ -102,8 +102,8 @@ export function ApplicationsFilterBar() {
               onClick={() => toggleStatus(opt.value)}
               className={`rounded-full border px-3 py-1 text-xs font-medium ${
                 active
-                  ? "border-gray-900 bg-gray-900 text-white"
-                  : "border-gray-300 bg-white text-gray-600 hover:border-gray-400"
+                  ? "border-orange-600 bg-orange-600 text-white"
+                  : "border-stone-300 bg-white text-stone-600 hover:border-stone-400"
               }`}
             >
               {opt.label}

@@ -34,10 +34,10 @@ export default async function ResumeDetailPage({
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-stone-900">
           Edit resume template
         </h1>
-        <Link href="/resumes" className="text-sm text-gray-500 hover:underline">
+        <Link href="/resumes" className="text-sm text-stone-500 hover:underline">
           Back to resumes
         </Link>
       </div>

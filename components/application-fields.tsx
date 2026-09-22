@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { Application, ApplicationStatus } from "@/lib/types";
 
 const inputClass =
-  "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none";
-const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+  "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none";
+const labelClass = "mb-1 block text-sm font-medium text-stone-700";
 
 const SOURCE_OPTIONS = [
   "LinkedIn",
@@ -166,12 +166,12 @@ export function ApplicationFields({
         </label>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-gray-700">
+      <label className="flex items-center gap-2 text-sm text-stone-700">
         <input
           type="checkbox"
           name="remote"
           defaultChecked={!!defaultValues.remote}
-          className="rounded border-gray-300"
+          className="rounded border-stone-300"
         />
         Remote
       </label>

@@ -1,8 +1,8 @@
-# Job Search
+# Milo
 
-A personal job application tracker with Claude-powered resume parsing —
-built to stay on top of applications, follow-ups, and contacts in one
-place, without duct-taping together a spreadsheet.
+Your companion for the job search — a Claude-powered application
+tracker built to stay on top of applications, follow-ups, and contacts
+in one place, without duct-taping together a spreadsheet.
 
 ## Features
 
@@ -63,8 +63,10 @@ place, without duct-taping together a spreadsheet.
 
 3. Run the SQL files in `supabase/` **in order** via the Supabase SQL
    Editor (`schema.sql` first, then `002_...` through `006_...`).
-4. Create your user directly in **Supabase → Authentication → Users**
-   (with "Auto Confirm User" enabled) — there's no self-serve sign-up.
+4. Set `INVITE_CODE` in `.env.local` to a value of your choosing, then
+   either create your own user directly in **Supabase → Authentication
+   → Users** (with "Auto Confirm User" enabled), or sign up through the
+   app at `/signup` using that invite code.
 5. Install and run:
 
    ```bash

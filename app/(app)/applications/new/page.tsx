@@ -13,10 +13,10 @@ export default async function NewApplicationPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-stone-900">
           Add application
         </h1>
-        <Link href="/" className="text-sm text-gray-500 hover:underline">
+        <Link href="/" className="text-sm text-stone-500 hover:underline">
           Cancel
         </Link>
       </div>

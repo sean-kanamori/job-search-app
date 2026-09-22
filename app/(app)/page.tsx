@@ -64,10 +64,10 @@ export default async function Home({
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Applications</h1>
+        <h1 className="text-xl font-semibold text-stone-900">Applications</h1>
         <Link
           href="/applications/new"
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+          className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700"
         >
           + Add application
         </Link>
@@ -82,55 +82,55 @@ export default async function Home({
       )}
 
       {applications.length === 0 ? (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-stone-500">
           {applicationsData && applicationsData.length > 0
             ? "No applications match these filters."
-            : "No applications yet. Add your first one to get started."}
+            : "Nothing here yet — add your first application and I'll help you keep track from here."}
         </p>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50">
+        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
+          <table className="min-w-full divide-y divide-stone-200 text-sm">
+            <thead className="bg-stone-50">
               <tr>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Company
                 </th>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Title
                 </th>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Status
                 </th>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Salary (USD)
                 </th>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Applied
                 </th>
-                <th className="px-4 py-2 text-left font-medium text-gray-500">
+                <th className="px-4 py-2 text-left font-medium text-stone-500">
                   Reminder
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-stone-100">
               {applications.map((app) => (
-                <tr key={app.id} className="hover:bg-gray-50">
+                <tr key={app.id} className="hover:bg-stone-50">
                   <td className="px-4 py-2">
                     <Link
                       href={`/applications/${app.id}`}
-                      className="font-medium text-gray-900 hover:underline"
+                      className="font-medium text-stone-900 hover:underline"
                     >
                       {app.company}
                     </Link>
                   </td>
-                  <td className="px-4 py-2 text-gray-700">{app.title}</td>
+                  <td className="px-4 py-2 text-stone-700">{app.title}</td>
                   <td className="px-4 py-2">
                     <StatusBadge status={app.status} />
                   </td>
-                  <td className="px-4 py-2 text-gray-700">
+                  <td className="px-4 py-2 text-stone-700">
                     {formatSalary(app.salary_min, app.salary_max)}
                   </td>
-                  <td className="px-4 py-2 text-gray-700">
+                  <td className="px-4 py-2 text-stone-700">
                     {app.applied_date ?? "—"}
                   </td>
                   <td className="px-4 py-2">

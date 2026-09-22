@@ -24,11 +24,11 @@ export default async function ApplicationLayout({
     <div className="mx-auto max-w-2xl">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-xl font-semibold text-stone-900">
             {application.title} · {application.company}
           </h1>
         </div>
-        <Link href="/" className="text-sm text-gray-500 hover:underline">
+        <Link href="/" className="text-sm text-stone-500 hover:underline">
           Back to applications
         </Link>
       </div>
