@@ -1,14 +1,36 @@
-import type { Application } from "@/lib/types";
+"use client";
+
+import { useState } from "react";
+import type { Application, ApplicationStatus } from "@/lib/types";
 
 const inputClass =
   "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none";
 const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+
+function today() {
+  return new Date().toISOString().slice(0, 10);
+}
 
 export function ApplicationFields({
   defaultValues = {},
 }: {
   defaultValues?: Partial<Application>;
 }) {
+  const [status, setStatus] = useState(defaultValues.status ?? "saved");
+  const [appliedDate, setAppliedDate] = useState(
+    defaultValues.applied_date ?? ""
+  );
+
+  function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = e.target.value as ApplicationStatus;
+    setStatus(next);
+    // Auto-fill today's date the first time status moves to "applied" —
+    // never overwrites a date you've already set.
+    if (next === "applied" && !appliedDate) {
+      setAppliedDate(today());
+    }
+  }
+
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -37,7 +59,8 @@ export function ApplicationFields({
           <span className={labelClass}>Status</span>
           <select
             name="status"
-            defaultValue={defaultValues.status ?? "saved"}
+            value={status}
+            onChange={handleStatusChange}
             className={inputClass}
           >
             <option value="saved">Saved</option>
@@ -53,7 +76,8 @@ export function ApplicationFields({
           <input
             type="date"
             name="applied_date"
-            defaultValue={defaultValues.applied_date ?? ""}
+            value={appliedDate}
+            onChange={(e) => setAppliedDate(e.target.value)}
             className={inputClass}
           />
         </label>
@@ -78,7 +102,7 @@ export function ApplicationFields({
           />
         </label>
         <label className="block">
-          <span className={labelClass}>Salary min</span>
+          <span className={labelClass}>Salary min (USD)</span>
           <input
             type="number"
             name="salary_min"
@@ -87,7 +111,7 @@ export function ApplicationFields({
           />
         </label>
         <label className="block">
-          <span className={labelClass}>Salary max</span>
+          <span className={labelClass}>Salary max (USD)</span>
           <input
             type="number"
             name="salary_max"

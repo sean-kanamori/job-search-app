@@ -24,3 +24,25 @@ export type Application = {
   created_at: string;
   updated_at: string;
 };
+
+export type FollowupType = "thank-you" | "check-in" | "other";
+
+export type Followup = {
+  id: string;
+  user_id: string;
+  application_id: string;
+  due_date: string;
+  type: FollowupType;
+  notes: string | null;
+  done: boolean;
+  created_at: string;
+};
+
+export type ApplicationEvent = {
+  id: string;
+  user_id: string;
+  application_id: string;
+  event_type: string;
+  description: string;
+  occurred_at: string;
+};

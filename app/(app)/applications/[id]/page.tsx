@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ApplicationFields } from "@/components/application-fields";
-import { updateApplication, deleteApplication } from "../../actions";
+import { updateApplication, deleteApplication } from "../actions";
 
-export default async function EditApplicationPage({
+export default async function ApplicationDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -23,16 +22,7 @@ export default async function EditApplicationPage({
   const deleteWithId = deleteApplication.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
-          Edit application
-        </h1>
-        <Link href="/" className="text-sm text-gray-500 hover:underline">
-          Cancel
-        </Link>
-      </div>
-
+    <div>
       <form action={updateWithId} className="space-y-4">
         <ApplicationFields defaultValues={application} />
         <button

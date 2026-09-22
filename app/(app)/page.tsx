@@ -54,7 +54,7 @@ export default async function Home() {
                   Status
                 </th>
                 <th className="px-4 py-2 text-left font-medium text-gray-500">
-                  Salary
+                  Salary (USD)
                 </th>
                 <th className="px-4 py-2 text-left font-medium text-gray-500">
                   Applied
@@ -66,7 +66,7 @@ export default async function Home() {
                 <tr key={app.id} className="hover:bg-gray-50">
                   <td className="px-4 py-2">
                     <Link
-                      href={`/applications/${app.id}/edit`}
+                      href={`/applications/${app.id}`}
                       className="font-medium text-gray-900 hover:underline"
                     >
                       {app.company}
