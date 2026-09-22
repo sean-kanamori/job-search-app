@@ -64,6 +64,7 @@ export default async function ActivityPage({
   const followups = (followupsData ?? []) as Followup[];
   const contacts = (contactsData ?? []) as Contact[];
   const events = (eventsData ?? []) as ApplicationEvent[];
+  const contactsById = new Map(contacts.map((c) => [c.id, c]));
 
   const createFollowupWithId = createFollowup.bind(null, id);
   const createContactWithId = createContact.bind(null, id);
@@ -103,6 +104,24 @@ export default async function ActivityPage({
               className="rounded-md border border-gray-300 px-3 py-2 text-sm"
             />
           </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-gray-700">
+              Contact
+            </span>
+            <select
+              name="contact_id"
+              defaultValue=""
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+            >
+              <option value="">No contact</option>
+              {contacts.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                  {c.role ? ` (${c.role})` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="block flex-1 min-w-[180px]">
             <span className="mb-1 block text-xs font-medium text-gray-700">
               Notes
@@ -120,6 +139,11 @@ export default async function ActivityPage({
             Add
           </button>
         </form>
+        {contacts.length === 0 && (
+          <p className="mt-2 text-xs text-gray-400">
+            Add a contact below to be able to tie a reminder to them.
+          </p>
+        )}
       </section>
 
       <section>
@@ -152,6 +176,14 @@ export default async function ActivityPage({
                       {isOverdue(f.due_date) ? " (overdue)" : ""}
                     </span>
                   </div>
+                  {f.contact_id && contactsById.get(f.contact_id) && (
+                    <p className="mt-1 text-sm text-gray-700">
+                      {contactsById.get(f.contact_id)!.name}
+                      {contactsById.get(f.contact_id)!.role
+                        ? ` (${contactsById.get(f.contact_id)!.role})`
+                        : ""}
+                    </p>
+                  )}
                   {f.notes && (
                     <p className="mt-1 text-sm text-gray-600">{f.notes}</p>
                   )}

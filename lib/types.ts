@@ -35,6 +35,7 @@ export type Followup = {
   type: FollowupType;
   notes: string | null;
   done: boolean;
+  contact_id: string | null;
   created_at: string;
 };
 

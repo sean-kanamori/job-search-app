@@ -247,6 +247,7 @@ export async function createFollowup(applicationId: string, formData: FormData) 
   const type = (formData.get("type") as string) || "other";
   const dueDate = formData.get("due_date") as string;
   const notes = ((formData.get("notes") as string) ?? "").trim() || null;
+  const contactId = (formData.get("contact_id") as string) || null;
 
   if (!dueDate) throw new Error("Due date is required.");
 
@@ -256,15 +257,26 @@ export async function createFollowup(applicationId: string, formData: FormData) 
     type,
     due_date: dueDate,
     notes,
+    contact_id: contactId,
   });
   if (error) throw new Error(error.message);
+
+  let contactSuffix = "";
+  if (contactId) {
+    const { data: contact } = await supabase
+      .from("contacts")
+      .select("name")
+      .eq("id", contactId)
+      .single();
+    if (contact) contactSuffix = ` for ${contact.name}`;
+  }
 
   await logEvent(
     supabase,
     user.id,
     applicationId,
     "followup_added",
-    `Added a ${type} follow-up for ${dueDate}.`
+    `Added a ${type} follow-up for ${dueDate}${contactSuffix}.`
   );
 
   revalidatePath(`/applications/${applicationId}/activity`);
