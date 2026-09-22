@@ -7,19 +7,29 @@ const inputClass =
   "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none";
 const labelClass = "mb-1 block text-sm font-medium text-gray-700";
 
+const SOURCE_OPTIONS = [
+  "LinkedIn",
+  "Company website",
+  "Other job board",
+  "Referral",
+];
+
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
 export function ApplicationFields({
   defaultValues = {},
+  resumeTemplates = [],
 }: {
   defaultValues?: Partial<Application>;
+  resumeTemplates?: { id: string; name: string }[];
 }) {
   const [status, setStatus] = useState(defaultValues.status ?? "saved");
   const [appliedDate, setAppliedDate] = useState(
     defaultValues.applied_date ?? ""
   );
+  const [source, setSource] = useState(defaultValues.source ?? "");
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const next = e.target.value as ApplicationStatus;
@@ -82,17 +92,49 @@ export function ApplicationFields({
           />
         </label>
         <label className="block">
-          <span className={labelClass}>Source</span>
-          <input
-            name="source"
-            placeholder="LinkedIn, referral…"
-            defaultValue={defaultValues.source ?? ""}
+          <span className={labelClass}>Resume used</span>
+          <select
+            name="resume_template_id"
+            defaultValue={defaultValues.resume_template_id ?? ""}
             className={inputClass}
-          />
+          >
+            <option value="">None selected</option>
+            {resumeTemplates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
+        <label className="block">
+          <span className={labelClass}>Source</span>
+          <select
+            name="source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">Select source</option>
+            {SOURCE_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </label>
+        {source === "Referral" && (
+          <label className="block">
+            <span className={labelClass}>Referral name</span>
+            <input
+              name="referral_name"
+              defaultValue={defaultValues.referral_name ?? ""}
+              className={inputClass}
+            />
+          </label>
+        )}
         <label className="block">
           <span className={labelClass}>Location</span>
           <input
@@ -101,6 +143,9 @@ export function ApplicationFields({
             className={inputClass}
           />
         </label>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
         <label className="block">
           <span className={labelClass}>Salary min (USD)</span>
           <input

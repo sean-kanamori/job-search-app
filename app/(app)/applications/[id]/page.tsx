@@ -10,11 +10,13 @@ export default async function ApplicationDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: application } = await supabase
-    .from("applications")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [{ data: application }, { data: resumeTemplates }] = await Promise.all([
+    supabase.from("applications").select("*").eq("id", id).single(),
+    supabase
+      .from("resume_templates")
+      .select("id, name")
+      .order("name", { ascending: true }),
+  ]);
 
   if (!application) notFound();
 
@@ -24,7 +26,10 @@ export default async function ApplicationDetailPage({
   return (
     <div>
       <form action={updateWithId} className="space-y-4">
-        <ApplicationFields defaultValues={application} />
+        <ApplicationFields
+          defaultValues={application}
+          resumeTemplates={resumeTemplates ?? []}
+        />
         <button
           type="submit"
           className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"

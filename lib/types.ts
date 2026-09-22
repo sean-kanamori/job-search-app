@@ -19,6 +19,8 @@ export type Application = {
   salary_min: number | null;
   salary_max: number | null;
   source: string | null;
+  referral_name: string | null;
+  resume_template_id: string | null;
   applied_date: string | null;
   notes: string | null;
   created_at: string;

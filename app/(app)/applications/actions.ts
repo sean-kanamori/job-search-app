@@ -20,6 +20,9 @@ function parseApplicationForm(formData: FormData) {
   const salaryMinRaw = formData.get("salary_min") as string;
   const salaryMaxRaw = formData.get("salary_max") as string;
   const appliedDateRaw = formData.get("applied_date") as string;
+  const source = ((formData.get("source") as string) ?? "").trim() || null;
+  const resumeTemplateId =
+    ((formData.get("resume_template_id") as string) ?? "").trim() || null;
 
   return {
     company: ((formData.get("company") as string) ?? "").trim(),
@@ -32,7 +35,14 @@ function parseApplicationForm(formData: FormData) {
     remote: formData.get("remote") === "on",
     salary_min: salaryMinRaw ? parseInt(salaryMinRaw, 10) : null,
     salary_max: salaryMaxRaw ? parseInt(salaryMaxRaw, 10) : null,
-    source: ((formData.get("source") as string) ?? "").trim() || null,
+    source,
+    // Only keep the referral name if "Referral" is actually selected,
+    // so a stale name left in the field doesn't get saved silently.
+    referral_name:
+      source === "Referral"
+        ? ((formData.get("referral_name") as string) ?? "").trim() || null
+        : null,
+    resume_template_id: resumeTemplateId,
     applied_date: appliedDateRaw || null,
     notes: ((formData.get("notes") as string) ?? "").trim() || null,
   };
