@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Search
 
-## Getting Started
+A personal job application tracker with Claude-powered resume parsing —
+built to stay on top of applications, follow-ups, and contacts in one
+place, without duct-taping together a spreadsheet.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Application tracker** — company, title, status, salary range,
+  location, source, and job description, with dashboard filters for
+  status, company search, and pending reminders.
+- **Resume templates** — upload a resume as a PDF or DOCX; Claude reads
+  and transcribes it to clean, editable text, stored alongside the
+  original file. Multiple named templates are supported, and each
+  application can reference which one was used.
+- **Follow-up reminders** — status changes propose a relevant follow-up
+  automatically (a check-in a week after applying, a thank-you note the
+  day after an interview), and closing out an application (rejected or
+  withdrawn) clears any reminders that no longer apply.
+- **Contacts** — track recruiters, hiring managers, and interviewers per
+  application, and tie a reminder to a specific person.
+- **Activity log** — an automatic, read-only history of what happened on
+  each application: status changes, reminders suggested/added/completed,
+  contacts added.
+
+## Stack
+
+- [Next.js 15](https://nextjs.org) (App Router, Turbopack) + TypeScript + Tailwind CSS v4
+- [Supabase](https://supabase.com) — Postgres, Auth (email + password), and
+  Storage, with Row-Level Security scoping every table to the signed-in
+  user
+- [Anthropic API](https://www.anthropic.com/api) (`claude-sonnet-5`) for
+  resume text extraction, via [`@anthropic-ai/sdk`](https://github.com/anthropics/anthropic-sdk-typescript)
+- [`mammoth`](https://github.com/mwilliamson/mammoth.js) for DOCX text
+  extraction (PDFs are read natively by Claude)
+
+## Architecture notes
+
+- **Server Actions, not a separate API layer** — reads happen in Server
+  Components, writes go through `"use server"` actions colocated with
+  the routes that use them (`app/(app)/applications/actions.ts`,
+  `app/(app)/resumes/actions.ts`).
+- **RLS does the access control.** Every table has a policy scoping rows
+  to `auth.uid()`, so a bug in application code can't leak another
+  user's data — the database itself refuses the query.
+- **Plain text over structured JSON for resumes.** Tailoring a resume
+  for a specific job is a freeform rewrite, not a fill-in-the-blanks
+  form, so the extracted resume content is stored as text rather than
+  forced into a fixed schema.
+
+## Getting started
+
+1. Create a [Supabase](https://supabase.com) project and an
+   [Anthropic](https://console.anthropic.com) API key.
+2. Copy `.env.local.example` (or create `.env.local`) with:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SUPABASE_SERVICE_ROLE_KEY=
+   ANTHROPIC_API_KEY=
+   ```
+
+3. Run the SQL files in `supabase/` **in order** via the Supabase SQL
+   Editor (`schema.sql` first, then `002_...` through `006_...`).
+4. Create your user directly in **Supabase → Authentication → Users**
+   (with "Auto Confirm User" enabled) — there's no self-serve sign-up.
+5. Install and run:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) and sign in.
+
+## Project structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+app/(app)/            Protected routes (auth-gated by the route group's layout)
+  applications/        Tracker: list, add, edit, per-application Activity tab
+  resumes/              Resume template upload, extraction, and editing
+lib/supabase/          Browser, server, and admin Supabase clients + auth helper
+lib/anthropic.ts       Claude-backed resume text extraction
+supabase/               SQL schema and incremental migrations, run in order
+```
