@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import type { ResumeTemplate } from "@/lib/types";
 
@@ -32,9 +33,12 @@ export default async function ResumesPage() {
       )}
 
       {templates.length === 0 ? (
-        <p className="text-sm text-stone-500">
-          No resumes yet. Upload a PDF or DOCX to get started.
-        </p>
+        <div className="flex flex-col items-center py-12 text-center">
+          <Image src="/mascot.png" alt="" width={100} height={100} aria-hidden="true" />
+          <p className="mt-2 text-sm text-stone-500">
+            No resumes yet. Upload a PDF or DOCX to get started.
+          </p>
+        </div>
       ) : (
         <ul className="space-y-2">
           {templates.map((t) => (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { StatusBadge } from "@/components/status-badge";
 import { ReminderBadge } from "@/components/reminder-badge";
@@ -82,11 +83,25 @@ export default async function Home({
       )}
 
       {applications.length === 0 ? (
-        <p className="text-sm text-stone-500">
-          {applicationsData && applicationsData.length > 0
-            ? "No applications match these filters."
-            : "Nothing here yet — add your first application and I'll help you keep track from here."}
-        </p>
+        applicationsData && applicationsData.length > 0 ? (
+          <p className="text-sm text-stone-500">
+            No applications match these filters.
+          </p>
+        ) : (
+          <div className="flex flex-col items-center py-12 text-center">
+            <Image
+              src="/mascot.png"
+              alt=""
+              width={100}
+              height={100}
+              aria-hidden="true"
+            />
+            <p className="mt-2 text-sm text-stone-500">
+              Nothing here yet — add your first application and I&apos;ll
+              help you keep track from here.
+            </p>
+          </div>
+        )
       ) : (
         <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
           <table className="min-w-full divide-y divide-stone-200 text-sm">

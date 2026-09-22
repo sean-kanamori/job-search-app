@@ -2,8 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import { Logo } from "@/components/logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -33,13 +33,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-stone-50 px-4">
+      <Image
+        src="/mascot.png"
+        alt=""
+        width={120}
+        height={120}
+        className="mb-2"
+        aria-hidden="true"
+        priority
+      />
       <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
-        <div className="mb-1 flex items-center gap-2">
-          <Logo />
-          <h1 className="text-xl font-semibold text-stone-900">Cora</h1>
-        </div>
-        <p className="mb-6 text-sm text-stone-500">
+        <h1 className="mb-1 text-center text-xl font-semibold text-stone-900">
+          Cora
+        </h1>
+        <p className="mb-6 text-center text-sm text-stone-500">
           Good to see you again — let&apos;s pick up where you left off.
         </p>
 

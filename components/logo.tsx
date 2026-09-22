@@ -1,12 +1,18 @@
+import Image from "next/image";
+
+const SIZES = { sm: 24, md: 32, lg: 40 };
+
 export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
-  const dims = size === "lg" ? "h-10 w-10 text-lg" : size === "sm" ? "h-6 w-6 text-xs" : "h-8 w-8 text-sm";
+  const px = SIZES[size];
 
   return (
-    <span
-      className={`inline-flex ${dims} flex-shrink-0 items-center justify-center rounded-xl bg-accent font-bold text-white`}
+    <Image
+      src="/logo-mark.png"
+      alt=""
+      width={px}
+      height={px}
+      className="flex-shrink-0"
       aria-hidden="true"
-    >
-      C
-    </span>
+    />
   );
 }
