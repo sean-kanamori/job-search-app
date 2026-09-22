@@ -16,7 +16,7 @@ export default function SignupPage() {
       <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
         <div className="mb-1 flex items-center gap-2">
           <Logo />
-          <h1 className="text-xl font-semibold text-stone-900">Milo</h1>
+          <h1 className="text-xl font-semibold text-stone-900">Cora</h1>
         </div>
         <p className="mb-6 text-sm text-stone-500">
           Let&apos;s get you set up — you&apos;ll need an invite code.

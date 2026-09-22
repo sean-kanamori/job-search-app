@@ -1,4 +1,4 @@
-# Milo
+# Cora
 
 Your companion for the job search — a Claude-powered application
 tracker built to stay on top of applications, follow-ups, and contacts

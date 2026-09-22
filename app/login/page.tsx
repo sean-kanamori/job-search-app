@@ -37,7 +37,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
         <div className="mb-1 flex items-center gap-2">
           <Logo />
-          <h1 className="text-xl font-semibold text-stone-900">Milo</h1>
+          <h1 className="text-xl font-semibold text-stone-900">Cora</h1>
         </div>
         <p className="mb-6 text-sm text-stone-500">
           Good to see you again — let&apos;s pick up where you left off.

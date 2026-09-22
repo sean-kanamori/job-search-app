@@ -20,7 +20,7 @@ export default async function AppLayout({
             className="flex items-center gap-2 text-lg font-semibold text-stone-900"
           >
             <Logo size="sm" />
-            Milo
+            Cora
           </Link>
           <div className="flex items-center gap-4 text-sm text-stone-600">
             <span>{user.email}</span>

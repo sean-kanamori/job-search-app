@@ -3,8 +3,8 @@
 :root {
   --background: #fafaf9; /* stone-50 */
   --foreground: #1c1917; /* stone-900 */
-  --accent: #b3785a; /* muted terracotta/clay — warm, not vivid */
-  --accent-hover: #96604a;
+  --accent: #4a85c9; /* light/soft sky blue */
+  --accent-hover: #3a6ba8;
 }
 
 @theme inline {

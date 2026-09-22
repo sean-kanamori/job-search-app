@@ -6,7 +6,7 @@ export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
       className={`inline-flex ${dims} flex-shrink-0 items-center justify-center rounded-xl bg-accent font-bold text-white`}
       aria-hidden="true"
     >
-      M
+      C
     </span>
   );
 }

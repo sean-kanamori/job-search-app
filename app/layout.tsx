@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Milo",
+  title: "Cora",
   description: "Your companion for the job search — track applications, tailor resumes, and stay on top of follow-ups.",
 };
 
