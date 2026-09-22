@@ -67,7 +67,7 @@ export function ApplicationsFilterBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by company…"
-          className="w-full max-w-xs rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+          className="w-full max-w-xs rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-accent focus:outline-none"
         />
         <label className="flex items-center gap-2 text-sm text-stone-700">
           <input
@@ -102,7 +102,7 @@ export function ApplicationsFilterBar() {
               onClick={() => toggleStatus(opt.value)}
               className={`rounded-full border px-3 py-1 text-xs font-medium ${
                 active
-                  ? "border-orange-600 bg-orange-600 text-white"
+                  ? "border-accent bg-accent text-white"
                   : "border-stone-300 bg-white text-stone-600 hover:border-stone-400"
               }`}
             >

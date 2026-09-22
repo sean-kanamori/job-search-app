@@ -3,11 +3,15 @@
 :root {
   --background: #fafaf9; /* stone-50 */
   --foreground: #1c1917; /* stone-900 */
+  --accent: #b3785a; /* muted terracotta/clay — warm, not vivid */
+  --accent-hover: #96604a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --font-sans: var(--font-jakarta-sans);
   --font-mono: var(--font-geist-mono);
 }

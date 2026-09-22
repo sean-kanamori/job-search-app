@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Application, ApplicationStatus } from "@/lib/types";
 
 const inputClass =
-  "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none";
+  "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-accent focus:outline-none";
 const labelClass = "mb-1 block text-sm font-medium text-stone-700";
 
 const SOURCE_OPTIONS = [

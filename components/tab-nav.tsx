@@ -20,7 +20,7 @@ export function TabNav({
             href={tab.href}
             className={`border-b-2 px-3 py-2 text-sm font-medium ${
               active
-                ? "border-orange-600 text-stone-900"
+                ? "border-accent text-stone-900"
                 : "border-transparent text-stone-500 hover:text-stone-700"
             }`}
           >

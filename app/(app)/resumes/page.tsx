@@ -19,7 +19,7 @@ export default async function ResumesPage() {
         </h1>
         <Link
           href="/resumes/new"
-          className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           + Upload resume
         </Link>

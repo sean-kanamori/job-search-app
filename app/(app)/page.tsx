@@ -67,7 +67,7 @@ export default async function Home({
         <h1 className="text-xl font-semibold text-stone-900">Applications</h1>
         <Link
           href="/applications/new"
-          className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           + Add application
         </Link>

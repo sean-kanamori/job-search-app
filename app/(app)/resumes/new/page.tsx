@@ -32,7 +32,7 @@ export default function NewResumePage() {
             name="name"
             required
             placeholder="e.g. Master Resume, PM Resume"
-            className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+            className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-accent focus:outline-none"
           />
         </label>
 
