@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { ApplicationStatus, FollowupType } from "@/lib/types";
+import type { ActionState } from "@/lib/action-state";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
@@ -151,7 +152,10 @@ async function handleStatusTransition(
   }
 }
 
-export async function createApplication(formData: FormData) {
+export async function createApplication(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -160,7 +164,7 @@ export async function createApplication(formData: FormData) {
 
   const fields = parseApplicationForm(formData);
   if (!fields.company || !fields.title) {
-    throw new Error("Company and title are required.");
+    return { error: "Company and title are required." };
   }
 
   const { data: inserted, error } = await supabase
@@ -168,7 +172,7 @@ export async function createApplication(formData: FormData) {
     .insert({ ...fields, user_id: user.id })
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   await logEvent(
     supabase,
@@ -193,7 +197,11 @@ export async function createApplication(formData: FormData) {
   redirect("/");
 }
 
-export async function updateApplication(id: string, formData: FormData) {
+export async function updateApplication(
+  id: string,
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -202,7 +210,7 @@ export async function updateApplication(id: string, formData: FormData) {
 
   const fields = parseApplicationForm(formData);
   if (!fields.company || !fields.title) {
-    throw new Error("Company and title are required.");
+    return { error: "Company and title are required." };
   }
 
   const { data: before } = await supabase
@@ -215,7 +223,7 @@ export async function updateApplication(id: string, formData: FormData) {
     .from("applications")
     .update(fields)
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   if (before) {
     await handleStatusTransition(
@@ -247,7 +255,11 @@ export async function deleteApplication(id: string) {
   redirect("/");
 }
 
-export async function createFollowup(applicationId: string, formData: FormData) {
+export async function createFollowup(
+  applicationId: string,
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -259,7 +271,7 @@ export async function createFollowup(applicationId: string, formData: FormData) 
   const notes = ((formData.get("notes") as string) ?? "").trim() || null;
   const contactId = (formData.get("contact_id") as string) || null;
 
-  if (!dueDate) throw new Error("Due date is required.");
+  if (!dueDate) return { error: "Due date is required." };
 
   const { error } = await supabase.from("followups").insert({
     user_id: user.id,
@@ -269,7 +281,7 @@ export async function createFollowup(applicationId: string, formData: FormData) 
     notes,
     contact_id: contactId,
   });
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   let contactSuffix = "";
   if (contactId) {
@@ -343,7 +355,11 @@ export async function deleteFollowup(
   redirect(`/applications/${applicationId}/activity`);
 }
 
-export async function createContact(applicationId: string, formData: FormData) {
+export async function createContact(
+  applicationId: string,
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -358,7 +374,7 @@ export async function createContact(applicationId: string, formData: FormData) {
     ((formData.get("linkedin_url") as string) ?? "").trim() || null;
   const notes = ((formData.get("notes") as string) ?? "").trim() || null;
 
-  if (!name) throw new Error("Name is required.");
+  if (!name) return { error: "Name is required." };
 
   const { error } = await supabase.from("contacts").insert({
     user_id: user.id,
@@ -370,7 +386,7 @@ export async function createContact(applicationId: string, formData: FormData) {
     linkedin_url,
     notes,
   });
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   await logEvent(
     supabase,

@@ -1,13 +1,9 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { ApplicationEvent, Contact, Followup } from "@/lib/types";
-import {
-  createFollowup,
-  completeFollowup,
-  deleteFollowup,
-  createContact,
-  deleteContact,
-} from "../../actions";
+import { completeFollowup, deleteFollowup, deleteContact } from "../../actions";
+import { AddFollowupForm } from "@/components/add-followup-form";
+import { AddContactForm } from "@/components/add-contact-form";
 
 const FOLLOWUP_LABELS: Record<string, string> = {
   "thank-you": "Thank-you",
@@ -66,84 +62,13 @@ export default async function ActivityPage({
   const events = (eventsData ?? []) as ApplicationEvent[];
   const contactsById = new Map(contacts.map((c) => [c.id, c]));
 
-  const createFollowupWithId = createFollowup.bind(null, id);
-  const createContactWithId = createContact.bind(null, id);
-
   return (
     <div className="space-y-8">
       <section>
         <h2 className="mb-3 text-sm font-semibold text-gray-900">
           Add a reminder
         </h2>
-        <form
-          action={createFollowupWithId}
-          className="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-white p-4"
-        >
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Type
-            </span>
-            <select
-              name="type"
-              defaultValue="check-in"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            >
-              <option value="thank-you">Thank-you</option>
-              <option value="check-in">Check-in</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Due date
-            </span>
-            <input
-              type="date"
-              name="due_date"
-              required
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Contact
-            </span>
-            <select
-              name="contact_id"
-              defaultValue=""
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            >
-              <option value="">No contact</option>
-              {contacts.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                  {c.role ? ` (${c.role})` : ""}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block flex-1 min-w-[180px]">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Notes
-            </span>
-            <input
-              name="notes"
-              placeholder="Optional"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <button
-            type="submit"
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            Add
-          </button>
-        </form>
-        {contacts.length === 0 && (
-          <p className="mt-2 text-xs text-gray-400">
-            Add a contact below to be able to tie a reminder to them.
-          </p>
-        )}
+        <AddFollowupForm applicationId={id} contacts={contacts} />
       </section>
 
       <section>
@@ -214,71 +139,7 @@ export default async function ActivityPage({
 
       <section>
         <h2 className="mb-3 text-sm font-semibold text-gray-900">Contacts</h2>
-        <form
-          action={createContactWithId}
-          className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-white p-4"
-        >
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Name
-            </span>
-            <input
-              name="name"
-              required
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Role
-            </span>
-            <select
-              name="role"
-              defaultValue="Recruiter"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            >
-              <option value="Recruiter">Recruiter</option>
-              <option value="Hiring Manager">Hiring Manager</option>
-              <option value="Interviewer">Interviewer</option>
-              <option value="Other">Other</option>
-            </select>
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Email
-            </span>
-            <input
-              type="email"
-              name="email"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              Phone
-            </span>
-            <input
-              name="phone"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block flex-1 min-w-[160px]">
-            <span className="mb-1 block text-xs font-medium text-gray-700">
-              LinkedIn
-            </span>
-            <input
-              type="url"
-              name="linkedin_url"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <button
-            type="submit"
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            Add
-          </button>
-        </form>
+        <AddContactForm applicationId={id} />
 
         {contacts.length === 0 ? (
           <p className="text-sm text-gray-500">No contacts added yet.</p>

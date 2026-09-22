@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { ApplicationFields } from "@/components/application-fields";
+import { ApplicationForm } from "@/components/application-form";
 import { updateApplication, deleteApplication } from "../actions";
 
 export default async function ApplicationDetailPage({
@@ -25,18 +25,12 @@ export default async function ApplicationDetailPage({
 
   return (
     <div>
-      <form action={updateWithId} className="space-y-4">
-        <ApplicationFields
-          defaultValues={application}
-          resumeTemplates={resumeTemplates ?? []}
-        />
-        <button
-          type="submit"
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-        >
-          Save changes
-        </button>
-      </form>
+      <ApplicationForm
+        action={updateWithId}
+        defaultValues={application}
+        resumeTemplates={resumeTemplates ?? []}
+        submitLabel="Save changes"
+      />
 
       <form action={deleteWithId} className="mt-4">
         <button type="submit" className="text-sm text-red-600 hover:underline">

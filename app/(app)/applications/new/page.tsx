@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { ApplicationFields } from "@/components/application-fields";
+import { ApplicationForm } from "@/components/application-form";
 import { createApplication } from "../actions";
 
 export default async function NewApplicationPage() {
@@ -20,15 +20,11 @@ export default async function NewApplicationPage() {
           Cancel
         </Link>
       </div>
-      <form action={createApplication} className="space-y-4">
-        <ApplicationFields resumeTemplates={resumeTemplates ?? []} />
-        <button
-          type="submit"
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-        >
-          Add application
-        </button>
-      </form>
+      <ApplicationForm
+        action={createApplication}
+        resumeTemplates={resumeTemplates ?? []}
+        submitLabel="Add application"
+      />
     </div>
   );
 }

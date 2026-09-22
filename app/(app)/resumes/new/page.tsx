@@ -1,8 +1,17 @@
+"use client";
+
+import { useActionState } from "react";
 import Link from "next/link";
 import { SubmitButton } from "@/components/submit-button";
+import { initialActionState } from "@/lib/action-state";
 import { uploadResumeTemplate } from "../actions";
 
 export default function NewResumePage() {
+  const [state, formAction] = useActionState(
+    uploadResumeTemplate,
+    initialActionState
+  );
+
   return (
     <div className="mx-auto max-w-xl">
       <div className="mb-6 flex items-center justify-between">
@@ -14,7 +23,7 @@ export default function NewResumePage() {
         </Link>
       </div>
 
-      <form action={uploadResumeTemplate} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-gray-700">
             Name
@@ -48,6 +57,9 @@ export default function NewResumePage() {
         <SubmitButton pendingLabel="Extracting…">
           Upload &amp; extract
         </SubmitButton>
+        {state?.error && (
+          <p className="text-sm text-red-600">{state.error}</p>
+        )}
       </form>
     </div>
   );

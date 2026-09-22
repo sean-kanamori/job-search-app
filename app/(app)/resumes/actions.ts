@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { extractResumeTextFromPdf, cleanupResumeText } from "@/lib/anthropic";
+import type { ActionState } from "@/lib/action-state";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
 const DOCX_MIME =
@@ -42,7 +43,14 @@ async function uploadOriginal(
   return path;
 }
 
-export async function uploadResumeTemplate(formData: FormData) {
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : "Something went wrong.";
+}
+
+export async function uploadResumeTemplate(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -52,11 +60,19 @@ export async function uploadResumeTemplate(formData: FormData) {
   const name = ((formData.get("name") as string) ?? "").trim();
   const file = formData.get("file") as File | null;
 
-  if (!name) throw new Error("Name is required.");
-  if (!file || file.size === 0) throw new Error("A file is required.");
+  if (!name) return { error: "Name is required." };
+  if (!file || file.size === 0) return { error: "A file is required." };
 
-  const content = await extractText(file);
-  const filePath = await uploadOriginal(supabase, user.id, file);
+  let content: string;
+  let filePath: string;
+  try {
+    content = await extractText(file);
+    filePath = await uploadOriginal(supabase, user.id, file);
+  } catch (err) {
+    // Covers an unsupported/oversized file, or the Claude/extraction
+    // call itself failing (rate limit, network blip, bad API key).
+    return { error: errorMessage(err) };
+  }
 
   const { data: inserted, error } = await supabase
     .from("resume_templates")
@@ -69,13 +85,17 @@ export async function uploadResumeTemplate(formData: FormData) {
     })
     .select("id")
     .single();
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   revalidatePath("/resumes");
   redirect(`/resumes/${inserted.id}`);
 }
 
-export async function updateResumeTemplate(id: string, formData: FormData) {
+export async function updateResumeTemplate(
+  id: string,
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -86,7 +106,7 @@ export async function updateResumeTemplate(id: string, formData: FormData) {
   const content = (formData.get("content") as string) ?? "";
   const file = formData.get("file") as File | null;
 
-  if (!name) throw new Error("Name is required.");
+  if (!name) return { error: "Name is required." };
 
   const updates: {
     name: string;
@@ -98,16 +118,20 @@ export async function updateResumeTemplate(id: string, formData: FormData) {
   // Replacing the file re-extracts text and overwrites the content
   // field, discarding any manual edits made since the last upload.
   if (file && file.size > 0) {
-    updates.content = await extractText(file);
-    updates.original_file_path = await uploadOriginal(supabase, user.id, file);
-    updates.original_file_name = file.name;
+    try {
+      updates.content = await extractText(file);
+      updates.original_file_path = await uploadOriginal(supabase, user.id, file);
+      updates.original_file_name = file.name;
+    } catch (err) {
+      return { error: errorMessage(err) };
+    }
   }
 
   const { error } = await supabase
     .from("resume_templates")
     .update(updates)
     .eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   revalidatePath("/resumes");
   revalidatePath(`/resumes/${id}`);
