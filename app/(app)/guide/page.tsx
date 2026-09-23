@@ -4,9 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { completeOnboarding } from "./actions";
 
-// Every step reuses the same mascot pose for now — swap in a
-// distinct `image` per step here whenever dedicated art exists,
-// nothing else needs to change.
 const STEPS = [
   {
     image: "/mascot.png",
@@ -14,22 +11,22 @@ const STEPS = [
     body: "I'm your Career Organizer & Reminder Assistant. Give me a minute to show you around — it'll make the rest of your search a lot smoother.",
   },
   {
-    image: "/mascot.png",
+    image: "/mascot-document.png",
     headline: "Upload once, reuse everywhere",
     body: "Drop in a PDF or DOCX and I'll pull out the text so it's ready to edit. Keep a few versions around — you'll be able to link the right one to each application.",
   },
   {
-    image: "/mascot.png",
+    image: "/mascot-pointing.png",
     headline: "Track every application",
     body: "Add a company and title, and I'll track its status, salary, source, and which resume you used. Filter by status, search by company, or jump straight to what needs attention.",
   },
   {
-    image: "/mascot.png",
+    image: "/mascot-bell.png",
     headline: "I'll remind you to follow up",
     body: "When you mark something applied or interviewing, I'll suggest a follow-up automatically. Add contacts too, so a reminder can point straight at who it's for.",
   },
   {
-    image: "/mascot.png",
+    image: "/mascot-thumbsup.png",
     headline: "That's the whole tour",
     body: "You can always come back to this from the \"How to use\" tab. Let's get started.",
   },
