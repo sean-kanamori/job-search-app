@@ -40,6 +40,7 @@ export default async function AppLayout({
             tabs={[
               { href: "/", label: "Applications" },
               { href: "/resumes", label: "Resumes" },
+              { href: "/guide", label: "How to use" },
             ]}
           />
         </div>

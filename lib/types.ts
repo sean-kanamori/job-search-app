@@ -66,6 +66,12 @@ export type Contact = {
   created_at: string;
 };
 
+export type Profile = {
+  id: string;
+  onboarded_at: string | null;
+  created_at: string;
+};
+
 export type ApplicationEvent = {
   id: string;
   user_id: string;
