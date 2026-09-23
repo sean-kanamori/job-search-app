@@ -23,9 +23,12 @@ export default function SignupPage() {
         priority
       />
       <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-center text-xl font-semibold text-stone-900">
+        <h1 className="text-center text-xl font-semibold text-stone-900">
           Cora
         </h1>
+        <p className="mb-1 text-center text-[11px] font-medium uppercase tracking-wide text-stone-400">
+          Career Organizer &amp; Reminder Assistant
+        </p>
         <p className="mb-6 text-center text-sm text-stone-500">
           Let&apos;s get you set up — you&apos;ll need an invite code.
         </p>

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Cora",
-  description: "Your companion for the job search — track applications, tailor resumes, and stay on top of follow-ups.",
+  description: "Cora (Career Organizer & Reminder Assistant) — your companion for the job search: track applications, tailor resumes, and stay on top of follow-ups.",
 };
 
 export default function RootLayout({

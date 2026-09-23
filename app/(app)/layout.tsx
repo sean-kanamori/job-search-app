@@ -18,6 +18,7 @@ export default async function AppLayout({
           <Link
             href="/"
             className="flex items-center gap-2 text-lg font-semibold text-stone-900"
+            title="Cora — Career Organizer & Reminder Assistant"
           >
             <Logo size="sm" />
             Cora

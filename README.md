@@ -1,8 +1,9 @@
 # Cora
 
-Your companion for the job search — a Claude-powered application
-tracker built to stay on top of applications, follow-ups, and contacts
-in one place, without duct-taping together a spreadsheet.
+**C**areer **O**rganizer & **R**eminder **A**ssistant — your companion
+for the job search: a Claude-powered application tracker built to stay
+on top of applications, follow-ups, and contacts in one place, without
+duct-taping together a spreadsheet.
 
 ## Features
 
