@@ -135,6 +135,9 @@ export function ApplicationFields({
             />
           </label>
         )}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
         <label className="block">
           <span className={labelClass}>Location</span>
           <input
@@ -143,6 +146,17 @@ export function ApplicationFields({
             className={inputClass}
           />
         </label>
+        <div className="flex items-end pb-2">
+          <label className="flex items-center gap-2 text-sm text-stone-700">
+            <input
+              type="checkbox"
+              name="remote"
+              defaultChecked={!!defaultValues.remote}
+              className="rounded border-stone-300"
+            />
+            Remote
+          </label>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -165,16 +179,6 @@ export function ApplicationFields({
           />
         </label>
       </div>
-
-      <label className="flex items-center gap-2 text-sm text-stone-700">
-        <input
-          type="checkbox"
-          name="remote"
-          defaultChecked={!!defaultValues.remote}
-          className="rounded border-stone-300"
-        />
-        Remote
-      </label>
 
       <label className="block">
         <span className={labelClass}>Job URL</span>
