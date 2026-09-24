@@ -9,26 +9,31 @@ const STEPS = [
     image: "/mascot.png",
     headline: "Hi, I'm Cora",
     body: "I'm your Career Organizer & Reminder Assistant. Give me a minute to show you around — it'll make the rest of your search a lot smoother.",
+    screenshot: null,
   },
   {
     image: "/mascot-document.png",
     headline: "Upload once, reuse everywhere",
     body: "Drop in a PDF or DOCX and I'll pull out the text so it's ready to edit. Keep a few versions around — you'll be able to link the right one to each application.",
+    screenshot: { src: "/screenshot-resumes.png", width: 1058, height: 376 },
   },
   {
     image: "/mascot-pointing.png",
     headline: "Track every application",
     body: "Add a company and title, and I'll track its status, salary, source, and which resume you used. Filter by status, search by company, or jump straight to what needs attention.",
+    screenshot: { src: "/screenshot-applications.png", width: 1032, height: 474 },
   },
   {
     image: "/mascot-bell.png",
     headline: "I'll remind you to follow up",
     body: "When you mark something applied or interviewing, I'll suggest a follow-up automatically. Add contacts too, so a reminder can point straight at who it's for.",
+    screenshot: { src: "/screenshot-activity.png", width: 693, height: 777 },
   },
   {
     image: "/mascot-thumbsup.png",
     headline: "That's the whole tour",
     body: "You can always come back to this from the \"How to use\" tab. Let's get started.",
+    screenshot: null,
   },
 ];
 
@@ -45,7 +50,7 @@ export default function GuidePage() {
   }
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center py-8 text-center">
+    <div className="mx-auto flex max-w-xl flex-col items-center py-8 text-center">
       <Image
         key={current.image + step}
         src={current.image}
@@ -58,7 +63,19 @@ export default function GuidePage() {
       <h1 className="mt-4 text-xl font-semibold text-stone-900">
         {current.headline}
       </h1>
-      <p className="mt-2 text-sm text-stone-600">{current.body}</p>
+      <p className="mt-2 max-w-md text-sm text-stone-600">{current.body}</p>
+
+      {current.screenshot && (
+        <Image
+          key={current.screenshot.src}
+          src={current.screenshot.src}
+          alt=""
+          width={current.screenshot.width}
+          height={current.screenshot.height}
+          className="mt-5 h-auto w-full max-w-md rounded-lg border border-stone-200 shadow-sm"
+          aria-hidden="true"
+        />
+      )}
 
       <div className="mt-6 flex gap-2">
         {STEPS.map((_, i) => (
@@ -71,7 +88,7 @@ export default function GuidePage() {
         ))}
       </div>
 
-      <div className="mt-8 flex w-full items-center justify-between">
+      <div className="mt-8 flex w-full max-w-md items-center justify-between">
         <button
           type="button"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
