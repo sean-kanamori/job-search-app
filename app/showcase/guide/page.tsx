@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { GUIDE_STEPS } from "@/lib/guide-steps";
-import { completeOnboarding } from "./actions";
 
-export default function GuidePage() {
+export default function ShowcaseGuidePage() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
-  const [pending, setPending] = useState(false);
   const isFirst = step === 0;
   const isLast = step === GUIDE_STEPS.length - 1;
   const current = GUIDE_STEPS[step];
 
-  async function finish() {
-    setPending(true);
-    await completeOnboarding();
+  function finish() {
+    router.push("/showcase");
   }
 
   return (
@@ -70,10 +70,9 @@ export default function GuidePage() {
           <button
             type="button"
             onClick={finish}
-            disabled={pending}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
+            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
           >
-            {pending ? "One sec…" : "Get started"}
+            Get started
           </button>
         ) : (
           <button
@@ -94,6 +93,15 @@ export default function GuidePage() {
         >
           Skip
         </button>
+      )}
+
+      {isLast && (
+        <p className="mt-4 text-sm text-stone-500">
+          Or, want the real thing?{" "}
+          <Link href="/login" className="font-medium text-accent underline">
+            Ask me for an invite →
+          </Link>
+        </p>
       )}
     </div>
   );
