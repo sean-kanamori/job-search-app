@@ -19,7 +19,7 @@ export const GUIDE_STEPS: GuideStep[] = [
     image: "/mascot-document.png",
     headline: "Upload once, reuse everywhere",
     body: "Drop in a PDF or DOCX and I'll pull out the text so it's ready to edit. Keep a few versions around — you'll be able to link the right one to each application.",
-    screenshot: { src: "/screenshot-resumes.png", width: 1058, height: 376 },
+    screenshot: { src: "/screenshot-resumes.png", width: 1032, height: 360 },
   },
   {
     image: "/mascot-pointing.png",

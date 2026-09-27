@@ -33,9 +33,9 @@ export const showcaseResumes: ResumeTemplate[] = [
     user_id: "demo",
     name: "Main Resume",
     content:
-      "Sean Kanamori\nProduct Designer\nsean.kanamori@gmail.com | (555) 012-3456 | San Francisco, CA\n\nSummary\nProduct designer with 6+ years shipping consumer and B2B software. Focused on design systems, rapid prototyping, and cross-functional collaboration with engineering and product.\n\nExperience\n\nSenior Product Designer — Fieldstone Software (2022-Present)\n- Led redesign of core onboarding flow, improving activation by 18%\n- Built and maintained a company-wide design system used by 4 product teams\n- Partnered with PM and eng leads on quarterly roadmap planning\n\nProduct Designer — Harbor Analytics (2019-2022)\n- Designed dashboard and reporting tools for enterprise customers\n- Ran user research and usability testing for major feature launches\n\nEducation\nB.A. Design, University of Washington\n\nSkills\nFigma, prototyping, design systems, user research, HTML/CSS",
+      "Casey Whitaker\nProduct Designer\ncasey.whitaker@example.com | (555) 012-3456 | San Francisco, CA\n\nSummary\nProduct designer with 6+ years shipping consumer and B2B software. Focused on design systems, rapid prototyping, and cross-functional collaboration with engineering and product.\n\nExperience\n\nSenior Product Designer — Fieldstone Software (2022-Present)\n- Led redesign of core onboarding flow, improving activation by 18%\n- Built and maintained a company-wide design system used by 4 product teams\n- Partnered with PM and eng leads on quarterly roadmap planning\n\nProduct Designer — Harbor Analytics (2019-2022)\n- Designed dashboard and reporting tools for enterprise customers\n- Ran user research and usability testing for major feature launches\n\nEducation\nB.A. Design, University of Washington\n\nSkills\nFigma, prototyping, design systems, user research, HTML/CSS",
     original_file_path: null,
-    original_file_name: "sean-kanamori-resume.pdf",
+    original_file_name: "casey-whitaker-resume.pdf",
     is_active: true,
     created_at: daysAgoIso(24),
     updated_at: daysAgoIso(1),
@@ -45,9 +45,9 @@ export const showcaseResumes: ResumeTemplate[] = [
     user_id: "demo",
     name: "Product Manager Resume",
     content:
-      "Sean Kanamori\nProduct Manager\nsean.kanamori@gmail.com | (555) 012-3456 | San Francisco, CA\n\nSummary\nProduct-minded generalist with a design background, now focused on product management. Comfortable owning roadmap, working directly with engineering, and talking to customers.\n\nExperience\n\nSenior Product Designer — Fieldstone Software (2022-Present)\n- Partnered with PM on roadmap prioritization and quarterly planning\n- Ran discovery interviews and synthesized findings into product requirements\n\nProduct Designer — Harbor Analytics (2019-2022)\n- Owned end-to-end feature delivery from discovery through launch\n\nEducation\nB.A. Design, University of Washington",
+      "Casey Whitaker\nProduct Manager\ncasey.whitaker@example.com | (555) 012-3456 | San Francisco, CA\n\nSummary\nProduct-minded generalist with a design background, now focused on product management. Comfortable owning roadmap, working directly with engineering, and talking to customers.\n\nExperience\n\nSenior Product Designer — Fieldstone Software (2022-Present)\n- Partnered with PM on roadmap prioritization and quarterly planning\n- Ran discovery interviews and synthesized findings into product requirements\n\nProduct Designer — Harbor Analytics (2019-2022)\n- Owned end-to-end feature delivery from discovery through launch\n\nEducation\nB.A. Design, University of Washington",
     original_file_path: null,
-    original_file_name: "sean-kanamori-pm-resume.docx",
+    original_file_name: "casey-whitaker-pm-resume.docx",
     is_active: true,
     created_at: daysAgoIso(24),
     updated_at: daysAgoIso(1),
