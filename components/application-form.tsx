@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { ApplicationFields } from "./application-fields";
-import { JobUrlParser } from "./job-url-parser";
+import { JobPostingParser } from "./job-posting-parser";
 import { SubmitButton } from "./submit-button";
 import type { Application } from "@/lib/types";
 import type { ActionState } from "@/lib/action-state";
@@ -50,7 +50,7 @@ export function ApplicationForm({
 
   return (
     <form action={formAction} className="space-y-4">
-      {showUrlParser && <JobUrlParser onParsed={setParsed} />}
+      {showUrlParser && <JobPostingParser onParsed={setParsed} />}
       <ApplicationFields
         key={JSON.stringify(mergedDefaults)}
         defaultValues={mergedDefaults}

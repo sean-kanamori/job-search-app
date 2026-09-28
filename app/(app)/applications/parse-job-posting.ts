@@ -4,8 +4,8 @@ import * as cheerio from "cheerio";
 import { createClient } from "@/lib/supabase/server";
 import { extractJobPosting, type ParsedJobPosting } from "@/lib/anthropic";
 
-export type ParseJobUrlResult =
-  | { data: ParsedJobPosting & { source: string | null } }
+export type ParsedJobResult =
+  | { data: ParsedJobPosting & { source: string | null; job_url: string } }
   | { error: string };
 
 // Aggregator job boards — anything else is treated as the company's own
@@ -76,11 +76,16 @@ async function fetchFollowingRedirects(startUrl: string, timeoutMs: number) {
   throw new Error("Too many redirects.");
 }
 
-export async function parseJobUrl(url: string): Promise<ParseJobUrlResult> {
+async function requireUser() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  return user;
+}
+
+export async function parseJobUrl(url: string): Promise<ParsedJobResult> {
+  const user = await requireUser();
   if (!user) return { error: "You need to be signed in." };
 
   let parsedUrl: URL;
@@ -123,10 +128,37 @@ export async function parseJobUrl(url: string): Promise<ParseJobUrlResult> {
 
   try {
     const data = await extractJobPosting(text.slice(0, 15000));
-    return { data: { ...data, source: guessSourceFromUrl(parsedUrl.toString()) } };
+    return {
+      data: {
+        ...data,
+        source: guessSourceFromUrl(parsedUrl.toString()),
+        job_url: parsedUrl.toString(),
+      },
+    };
   } catch {
     return {
       error: "Couldn't extract job details from that page. Try pasting them in manually.",
     };
+  }
+}
+
+/** Same extraction as parseJobUrl, but starting from job posting text the
+ * user pasted directly — the fallback for sites that block scraping
+ * (LinkedIn, Indeed) or that a URL just couldn't reach. There's no URL to
+ * guess the Source from here, so that's left for the user to pick. */
+export async function parseJobText(text: string): Promise<ParsedJobResult> {
+  const user = await requireUser();
+  if (!user) return { error: "You need to be signed in." };
+
+  const trimmed = text.trim();
+  if (trimmed.length < 100) {
+    return { error: "Paste more of the job posting — this looks too short to extract from." };
+  }
+
+  try {
+    const data = await extractJobPosting(trimmed.slice(0, 15000));
+    return { data: { ...data, source: null, job_url: "" } };
+  } catch {
+    return { error: "Couldn't extract job details from that text." };
   }
 }
