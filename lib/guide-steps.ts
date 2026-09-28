@@ -24,8 +24,14 @@ export const GUIDE_STEPS: GuideStep[] = [
   {
     image: "/mascot-pointing.png",
     headline: "Track every application",
-    body: "Add a company and title, and I'll track its status, salary, source, and which resume you used. Filter by status, search by company, or jump straight to what needs attention.",
+    body: "I'll track status, salary, source, and which resume you used for every application. Filter by status, search by company, or jump straight to what needs attention.",
     screenshot: { src: "/screenshot-applications.png", width: 1032, height: 474 },
+  },
+  {
+    image: "/mascot-document.png",
+    headline: "Let me fill in the details",
+    body: "Paste a job URL — or just the description text, if a site blocks scraping — and I'll fill in the company, title, salary, and more automatically. Once you've picked a resume, I can even suggest specific ways to tailor it for that job.",
+    screenshot: { src: "/screenshot-add-application.png", width: 672, height: 500 },
   },
   {
     image: "/mascot-bell.png",
