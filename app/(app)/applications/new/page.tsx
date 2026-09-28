@@ -24,6 +24,7 @@ export default async function NewApplicationPage() {
         action={createApplication}
         resumeTemplates={resumeTemplates ?? []}
         submitLabel="Add application"
+        showUrlParser
       />
     </div>
   );
