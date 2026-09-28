@@ -7,7 +7,9 @@ import type { ParsedJobPosting } from "@/lib/anthropic";
 export function JobUrlParser({
   onParsed,
 }: {
-  onParsed: (data: ParsedJobPosting & { job_url: string }) => void;
+  onParsed: (
+    data: ParsedJobPosting & { job_url: string; source: string | null }
+  ) => void;
 }) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");

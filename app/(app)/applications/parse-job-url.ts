@@ -4,7 +4,38 @@ import * as cheerio from "cheerio";
 import { createClient } from "@/lib/supabase/server";
 import { extractJobPosting, type ParsedJobPosting } from "@/lib/anthropic";
 
-export type ParseJobUrlResult = { data: ParsedJobPosting } | { error: string };
+export type ParseJobUrlResult =
+  | { data: ParsedJobPosting & { source: string | null } }
+  | { error: string };
+
+// Aggregator job boards — anything else is treated as the company's own
+// site (including ATS platforms like Greenhouse/Lever, which are
+// embedded on a company's career page even though the domain differs).
+const JOB_BOARD_HOSTNAMES = [
+  "indeed.com",
+  "ziprecruiter.com",
+  "monster.com",
+  "glassdoor.com",
+  "dice.com",
+  "simplyhired.com",
+  "careerbuilder.com",
+];
+
+/** Guesses the "Source" dropdown value from the job URL's hostname.
+ * Matches the exact option strings in application-fields.tsx. */
+function guessSourceFromUrl(url: string): string | null {
+  let hostname: string;
+  try {
+    hostname = new URL(url).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+  if (hostname.includes("linkedin.com")) return "LinkedIn";
+  if (JOB_BOARD_HOSTNAMES.some((d) => hostname.includes(d))) {
+    return "Other job board";
+  }
+  return "Company website";
+}
 
 const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
@@ -92,7 +123,7 @@ export async function parseJobUrl(url: string): Promise<ParseJobUrlResult> {
 
   try {
     const data = await extractJobPosting(text.slice(0, 15000));
-    return { data };
+    return { data: { ...data, source: guessSourceFromUrl(parsedUrl.toString()) } };
   } catch {
     return {
       error: "Couldn't extract job details from that page. Try pasting them in manually.",

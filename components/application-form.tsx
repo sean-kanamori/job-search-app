@@ -10,7 +10,9 @@ import { initialActionState } from "@/lib/action-state";
 import type { ParsedJobPosting } from "@/lib/anthropic";
 
 function toDefaults(
-  parsed: (ParsedJobPosting & { job_url: string }) | null
+  parsed:
+    | (ParsedJobPosting & { job_url: string; source: string | null })
+    | null
 ): Partial<Application> | undefined {
   if (!parsed) return undefined;
   return {
@@ -22,6 +24,7 @@ function toDefaults(
     salary_max: parsed.salary_max ?? undefined,
     job_description: parsed.job_description ?? undefined,
     job_url: parsed.job_url,
+    source: parsed.source ?? undefined,
   };
 }
 
@@ -40,7 +43,7 @@ export function ApplicationForm({
 }) {
   const [state, formAction] = useActionState(action, initialActionState);
   const [parsed, setParsed] = useState<
-    (ParsedJobPosting & { job_url: string }) | null
+    (ParsedJobPosting & { job_url: string; source: string | null }) | null
   >(null);
 
   const mergedDefaults = { ...defaultValues, ...toDefaults(parsed) };
