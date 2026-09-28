@@ -139,3 +139,100 @@ export async function extractJobPosting(
   }
   return toolUse.input as ParsedJobPosting;
 }
+
+export type TailoringSuggestions = {
+  overall_fit: string;
+  strong_matches: string[];
+  missing_keywords: string[];
+  bullet_suggestions: { original: string; suggestion: string; reason: string }[];
+};
+
+const TAILORING_TOOL: Anthropic.Tool = {
+  name: "record_tailoring_suggestions",
+  description:
+    "Record suggestions for tailoring a resume to a specific job description.",
+  input_schema: {
+    type: "object",
+    properties: {
+      overall_fit: {
+        type: "string",
+        description:
+          "A 1-2 sentence honest summary of how well this resume currently fits this job.",
+      },
+      strong_matches: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Specific things already in the resume that align well with this job and are worth keeping or emphasizing.",
+      },
+      missing_keywords: {
+        type: "array",
+        items: { type: "string" },
+        description:
+          "Important skills or terms from the job description that are missing, or not clearly reflected, in the resume.",
+      },
+      bullet_suggestions: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            original: {
+              type: "string",
+              description: "An existing bullet or line from the resume, quoted exactly.",
+            },
+            suggestion: {
+              type: "string",
+              description: "A rewritten version of that bullet, tailored to this job.",
+            },
+            reason: {
+              type: "string",
+              description: "One short sentence on why this change helps for this specific job.",
+            },
+          },
+          required: ["original", "suggestion", "reason"],
+        },
+        description:
+          "3-5 specific, high-impact bullet rewrites. Don't rewrite the whole resume — focus on the changes that matter most for this job.",
+      },
+    },
+    required: [
+      "overall_fit",
+      "strong_matches",
+      "missing_keywords",
+      "bullet_suggestions",
+    ],
+  },
+};
+
+/**
+ * Compares a resume against a job description and suggests specific,
+ * honest ways to tailor it — rephrasing or resurfacing real experience,
+ * never inventing anything that isn't already in the resume.
+ */
+export async function suggestResumeTailoring(
+  resumeText: string,
+  jobDescription: string
+): Promise<TailoringSuggestions> {
+  const response = await anthropic.messages.create({
+    model: MODEL,
+    max_tokens: 3000,
+    tools: [TAILORING_TOOL],
+    tool_choice: { type: "tool", name: "record_tailoring_suggestions" },
+    messages: [
+      {
+        role: "user",
+        content:
+          "Compare this resume to the job description below and suggest specific ways to tailor the resume for this job. " +
+          "Only rephrase, reorder emphasis, or surface experience that's genuinely already in the resume — never invent " +
+          "experience, skills, or credentials that aren't there.\n\n" +
+          `RESUME:\n---\n${resumeText}\n---\n\nJOB DESCRIPTION:\n---\n${jobDescription}\n---`,
+      },
+    ],
+  });
+
+  const toolUse = response.content.find((b) => b.type === "tool_use");
+  if (!toolUse || toolUse.type !== "tool_use") {
+    throw new Error("Claude didn't return structured tailoring suggestions.");
+  }
+  return toolUse.input as TailoringSuggestions;
+}

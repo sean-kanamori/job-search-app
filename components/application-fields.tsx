@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Application, ApplicationStatus } from "@/lib/types";
+import { ResumeTailoring } from "./resume-tailoring";
 
 const inputClass =
   "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-accent focus:outline-none";
@@ -30,6 +31,12 @@ export function ApplicationFields({
     defaultValues.applied_date ?? ""
   );
   const [source, setSource] = useState(defaultValues.source ?? "");
+  const [resumeTemplateId, setResumeTemplateId] = useState(
+    defaultValues.resume_template_id ?? ""
+  );
+  const [jobDescription, setJobDescription] = useState(
+    defaultValues.job_description ?? ""
+  );
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const next = e.target.value as ApplicationStatus;
@@ -95,7 +102,8 @@ export function ApplicationFields({
           <span className={labelClass}>Resume used</span>
           <select
             name="resume_template_id"
-            defaultValue={defaultValues.resume_template_id ?? ""}
+            value={resumeTemplateId}
+            onChange={(e) => setResumeTemplateId(e.target.value)}
             className={inputClass}
           >
             <option value="">None selected</option>
@@ -195,11 +203,20 @@ export function ApplicationFields({
         <textarea
           name="job_description"
           rows={4}
-          defaultValue={defaultValues.job_description ?? ""}
+          value={jobDescription}
+          onChange={(e) => setJobDescription(e.target.value)}
           placeholder="Paste it here — useful later for tailoring your resume"
           className={inputClass}
         />
       </label>
+
+      {resumeTemplateId && (
+        <ResumeTailoring
+          key={resumeTemplateId}
+          resumeTemplateId={resumeTemplateId}
+          jobDescription={jobDescription}
+        />
+      )}
 
       <label className="block">
         <span className={labelClass}>Notes</span>
